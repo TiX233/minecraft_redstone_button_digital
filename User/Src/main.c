@@ -82,7 +82,7 @@ struct rs_button_stu my_rs_button = {
     .button_pin_read = my_rs_button_button_pin_read,
 
     .button_last_state = 1,
-    .button_delay = RS_BUTTON_CD_FAST,
+    .button_delay = RS_BUTTON_CD_STONE,
     .button_cd = RS_BUTTON_CD_MAX,
 
     .io = {

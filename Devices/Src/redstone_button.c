@@ -26,9 +26,10 @@ void my_rs_io_pin_write(struct rs_channel_stu *ch, uint8_t pin_state){
     HAL_GPIO_WritePin(ch->pin.port, ch->pin.pin, pin_state);
 }
 
+static uint8_t flag_output = 0;
 void my_rs_io_callback_communication_init(struct rs_io_stu *io){
     uint8_t button_state = my_rs_button.button_pin_read();
-    uint8_t flag_output = 0;
+    flag_output = 0;
 
     if(my_rs_button.button_last_state == 1){
         if(button_state == 0){ // 按键下降沿
@@ -54,7 +55,7 @@ void my_rs_io_callback_communication_init(struct rs_io_stu *io){
             }
         }
 
-        my_rs_button.led_pin_write(1);
+        // my_rs_button.led_pin_write(1);
     }else { // 输出强度为 16 的信号，点亮 led
         for(uint8_t i = 0; i < RS_BUTTON_CH_NUM; i ++){
             for(uint8_t j = RS_CHANNEL_STEP_3_set_r16; j < RS_CHANNEL_STEP_19_set_ack; j ++){
@@ -62,7 +63,7 @@ void my_rs_io_callback_communication_init(struct rs_io_stu *io){
             }
         }
 
-        my_rs_button.led_pin_write(0);
+        // my_rs_button.led_pin_write(0);
     }
 
     // 确保 1ms 后再进入通信
@@ -74,7 +75,7 @@ void my_rs_io_callback_channel_change(struct rs_io_stu *io){
 }
 
 void my_rs_io_callback_communication_over(struct rs_io_stu *io){
-    // 没什么事情做
+    my_rs_button.led_pin_write(!flag_output); // 将输出指示灯放到通信完成后
 }
 
 
